@@ -3,11 +3,32 @@
 #include<type_traits>
 
 /*------------------------------------------------------------------------------
-* In this ECS framework  
+* In this ECS framework Entities are used only as identifiers and thus only   
+* contain an Entity ID and a version number. The version number will allow us to
+* make sure the entity a system may have reference to hasn't been altered 
+* without the system knowing. Ideally, we would like to cram this Entity class
+* into a 16,32, or 64 bit space depending on the needs of the user. Using
+* template overloads, we can force the underlying type of an Entity as seen in
+* the entity_traits struct. The details on how to read entity_traits definitions
+* are as follows:
+*	
+*			Entity (16-bit): 0 0 0 0 0 0 0 0 0 0 0 1 | 0 0 0 1
+*								  				  ID | Version
+*						vmask_shift = 12 (version starts 12 bits in)
+*						entity_mask = 0xFFF (12-bits worth of data for ID),
+*						version_mask = 0xF (4-bits of data for Version)
+*	
+* The entity_mask and version_mask are used to pull out the values by bit-wise 
+* comparision, and vmask_shift describes the number of bits our version number 
+* starts at. Additionally, we have to define the types we will cast our Entity 
+* ID to, the type for Entity Version, and the type used for indexing and for
+* the difference of iterators over arrays of this type.
 *
-*
-*
-*
+* Additionally, to accomodate the needs of our SparseSet, we need to define a
+* null Entity class. To make the null Entity class, we simply need to define
+* comparision operators between null types and entity types as well as a
+* conversion operator so that the null Entity can be properly cast to an Entity 
+* type.
 *-----------------------------------------------------------------------------*/
 
 // TODO: Move this kind of stuff into a separate config file
@@ -34,31 +55,13 @@ namespace recs {
 		return static_cast<std::underlying_type_t<Entity>>(ent);
 	}
 
-
-	// The next set of entity_traits definitions sets a requirement on the valid
-	// template arguments for the Entity class. We use the following definitions
-	// to get the traits of an entity as entity_traits<Entity>. If Entity is not
-	// defined in a templated struct below then the underlying type of the 
-	// Entity is invalid. The layout of the data in an Entity is as follows:
-	//
-	//		Entity (16-bit): 0 0 0 0 0 0 0 0 0 0 0 1 | 0 0 0 1
-	//							  				  ID | Version
-	//					vmask_shift = 12 (version starts 12 bits in)
-	//					entity_mask = 0xFFF (12-bits worth of data for ID),	
-	//					version_mask = 0xF (4-bits of data for Version)
-	//
-	// The entity_mask and version_mask are used to pull out the values by 
-	// bit-wise comparision, and vmask_shift describes the number of bits our
-	// version number starts at. Additionally, we have to define the types we
-	// will cast our Entity ID to, the type for Entity Version, and the type
-	// used for indexing (ie. accomodating the max number of entities).
-
 	// Forward declare entity_traits template
 	template<typename>
 	struct entity_traits;
 
 	// The following code is used to describe the traits of a 16-bit entity id.
-	// 
+	// For details on the thoughts behind this, see the description at the start
+	// of the file.
 	template<>
 	struct entity_traits<std::uint16_t>
 	{
@@ -148,6 +151,6 @@ namespace recs {
 
 	}
 
-	// Define alias as constexpr
+	// Use null as an alias to an instantiation of the null class
 	constexpr auto null = internal::null{};
 }
