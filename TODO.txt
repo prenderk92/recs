@@ -1,0 +1,17 @@
+Where to get started?
+1) What do we need to make a game engine?
+	- data model, game logic, assets, ect...
+
+2) What have other game engines done?
+	- unity, unreal, entt, etc...
+
+3) What do we want out of the api?
+	- ref other engines, talks, etc...
+
+4) What should our design look like?
+	- put together a uml diagram, outline design decisions
+
+5) Slap it together, document it well!
+	- document and refactor previously written code (good luck figuring it out)
+
+6) Show it in a demo and wrap it in a build system (cmake probably)

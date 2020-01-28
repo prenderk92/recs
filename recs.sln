@@ -7,6 +7,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "recs", "recs\recs.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "recs_tests", "recs_tests\recs_tests.vcxproj", "{97A29D36-763D-4326-8640-BE4F649205A5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1C21782C-8F62-4403-ABBC-AAC22AFFB9A8}"
+	ProjectSection(SolutionItems) = preProject
+		README.txt = README.txt
+		TODO.txt = TODO.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
