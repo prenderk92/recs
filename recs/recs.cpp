@@ -3,9 +3,18 @@
 
 #include <iostream>
 
+#include "Entity.h"
+
 int main()
 {
-    std::cout << "Hello World!\n";
+	using traits = recs::entity_traits<std::underlying_type_t<recs::Entity>>;
+
+	// Get null cast as an entity using the conversion operator
+	const auto null_entity = static_cast<recs::Entity>(recs::null);
+
+	std::cout << to_integral(null_entity) << std::endl
+		<< to_integral(recs::Entity{}) << std::endl;
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
